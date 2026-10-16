@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Máquina de banho de pets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+    <header class="top">
+        <h1>Máquina de banho de pets</h1>
+        <ul class="chips" aria-label="Situação da máquina">
+            <li class="chip" id="chip-machine" data-tone="ok">Máquina limpa</li>
+            <li class="chip" id="chip-pet" data-tone="idle">Sem pet na máquina</li>
+        </ul>
+    </header>
+
+    <div class="layout">
+        <section class="stage" aria-label="Máquina e fases do banho">
+            <div class="cabin" id="cabin" data-phase="idle" data-machine="clean" data-pet="none" data-pet-clean="false">
+                <svg class="machine" viewBox="0 0 400 444" role="img" aria-labelledby="machine-title machine-desc">
+                    <title id="machine-title">Máquina de banho de pets</title>
+                    <desc id="machine-desc">Cabine com janela de vidro, chuveiro no alto e um visor que mostra a fase atual.</desc>
+                    <defs>
+                        <clipPath id="window-clip"><rect x="56" y="104" width="288" height="236" rx="30"/></clipPath>
+                    </defs>
+
+                    <rect class="m-feet" x="64" y="420" width="56" height="16" rx="8"/>
+                    <rect class="m-feet" x="280" y="420" width="56" height="16" rx="8"/>
+                    <rect class="m-body" x="16" y="16" width="368" height="410" rx="40"/>
+
+                    <rect class="m-head" x="110" y="32" width="180" height="46" rx="23"/>
+                    <g class="m-nozzles">
+                        <rect x="124" y="74" width="12" height="10" rx="4"/>
+                        <rect x="159" y="74" width="12" height="10" rx="4"/>
+                        <rect x="194" y="74" width="12" height="10" rx="4"/>
+                        <rect x="229" y="74" width="12" height="10" rx="4"/>
+                        <rect x="264" y="74" width="12" height="10" rx="4"/>
+                    </g>
+
+                    <rect class="m-glass" x="56" y="104" width="288" height="236" rx="30"/>
+
+                    <g clip-path="url(#window-clip)">
+                        <rect class="m-floor" x="56" y="318" width="288" height="24"/>
+
+                        <g class="smudge">
+                            <ellipse cx="110" cy="160" rx="34" ry="20"/>
+                            <ellipse cx="272" cy="214" rx="40" ry="24"/>
+                            <ellipse cx="180" cy="296" rx="50" ry="20"/>
+                            <ellipse cx="304" cy="140" rx="20" ry="14"/>
+                        </g>
+
+                        <g class="pet-wrap" id="pet-wrap">
+                            <path class="tail" d="M258 262 q28 -10 22 -42"/>
+                            <rect class="leg" x="156" y="290" width="20" height="40" rx="10"/>
+                            <rect class="leg" x="226" y="290" width="20" height="40" rx="10"/>
+                            <ellipse class="fur" cx="200" cy="270" rx="62" ry="44"/>
+                            <ellipse class="ear" cx="164" cy="192" rx="14" ry="26" transform="rotate(-20 164 192)"/>
+                            <ellipse class="ear" cx="236" cy="192" rx="14" ry="26" transform="rotate(20 236 192)"/>
+                            <circle class="fur" cx="200" cy="205" r="40"/>
+                            <ellipse class="snout" cx="200" cy="219" rx="20" ry="15"/>
+                            <ellipse class="nose" cx="200" cy="212" rx="7" ry="5"/>
+                            <circle class="eye" cx="186" cy="196" r="4.5"/>
+                            <circle class="eye" cx="214" cy="196" r="4.5"/>
+
+                            <g class="dirt">
+                                <circle cx="180" cy="255" r="7"/>
+                                <circle cx="222" cy="277" r="9"/>
+                                <circle cx="190" cy="185" r="5"/>
+                                <circle cx="236" cy="238" r="6"/>
+                                <circle cx="165" cy="285" r="6"/>
+                            </g>
+
+                            <g class="foam">
+                                <circle cx="170" cy="250" r="14"/>
+                                <circle cx="210" cy="245" r="16"/>
+                                <circle cx="240" cy="270" r="13"/>
+                                <circle cx="190" cy="200" r="12"/>
+                                <circle cx="222" cy="190" r="11"/>
+                                <circle cx="200" cy="172" r="13"/>
+                                <circle cx="180" cy="282" r="12"/>
+                            </g>
+
+                            <g transform="translate(150 160)"><path class="sparkle" style="--i:0" d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z"/></g>
+                            <g transform="translate(256 168)"><path class="sparkle" style="--i:1" d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z"/></g>
+                            <g transform="translate(276 252)"><path class="sparkle" style="--i:2" d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z"/></g>
+                            <g transform="translate(136 250)"><path class="sparkle" style="--i:3" d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z"/></g>
+                        </g>
+
+                        <g class="jets">
+                            <line class="jet" x1="130" y1="86" x2="130" y2="326"/>
+                            <line class="jet" x1="165" y1="86" x2="165" y2="326"/>
+                            <line class="jet" x1="200" y1="86" x2="200" y2="326"/>
+                            <line class="jet" x1="235" y1="86" x2="235" y2="326"/>
+                            <line class="jet" x1="270" y1="86" x2="270" y2="326"/>
+                        </g>
+
+                        <g class="bubbles" id="bubbles"></g>
+                        <path class="m-shine" d="M84 104 L156 104 L100 340 L56 340 L56 140Z"/>
+                    </g>
+                    <rect class="m-glass-frame" x="56" y="104" width="288" height="236" rx="30"/>
+
+                    <rect class="m-display" x="56" y="360" width="288" height="44" rx="14"/>
+                    <text class="m-display-text" id="display-text" x="200" y="390" text-anchor="middle">Pronta</text>
+                </svg>
+            </div>
+
+            <ol class="phases" id="phases" aria-label="Fases do banho">
+                <li><span class="dot">1</span><span class="name">Colocar pet</span></li>
+                <li><span class="dot">2</span><span class="name">Ensaboar</span></li>
+                <li><span class="dot">3</span><span class="name">Enxaguar</span></li>
+                <li><span class="dot">4</span><span class="name">Pet limpo</span></li>
+                <li><span class="dot">5</span><span class="name">Retirar pet</span></li>
+            </ol>
+        </section>
+
+        <div class="controls">
+            <section class="group" aria-labelledby="h-supply">
+                <h2 class="sr-only" id="h-supply">Níveis da máquina</h2>
+
+                <div class="gauge">
+                    <div class="gauge-head">
+                        <span class="gauge-name">Água</span>
+                        <output id="water-text">30 de 30 litros</output>
+                    </div>
+                    <div class="tube" id="water-meter" role="meter" aria-label="Nível de água" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" style="--seg:33.333%">
+                        <div class="fill fill--water" id="water-fill"></div>
+                    </div>
+                </div>
+
+                <div class="gauge">
+                    <div class="gauge-head">
+                        <span class="gauge-name">Shampoo</span>
+                        <output id="shampoo-text">0 de 10 litros</output>
+                    </div>
+                    <div class="tube" id="shampoo-meter" role="meter" aria-label="Nível de shampoo" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" style="--seg:20%">
+                        <div class="fill fill--shampoo" id="shampoo-fill"></div>
+                    </div>
+                </div>
+
+                <p class="baths-left" id="baths-left"></p>
+            </section>
+
+            <section class="group" aria-labelledby="h-actions">
+                <h2 class="sr-only" id="h-actions">Ações</h2>
+
+                <form class="pet-form" id="pet-form" autocomplete="off">
+                    <label class="field">
+                        <span class="field-label">Nome do pet</span>
+                        <input id="pet-name" name="pet-name" type="text" maxlength="24" placeholder="Rex">
+                    </label>
+                    <button class="btn" type="submit" data-action="place">Colocar pet</button>
+                </form>
+
+                <div class="actions">
+                    <button class="btn btn--primary" type="button" data-action="bath">Dar banho</button>
+                    <button class="btn" type="button" data-action="remove">Retirar pet</button>
+                    <button class="btn" type="button" data-action="water">Abastecer água</button>
+                    <button class="btn" type="button" data-action="shampoo">Abastecer shampoo</button>
+                    <button class="btn" type="button" data-action="wash">Limpar máquina</button>
+                </div>
+            </section>
+
+            <section class="group" aria-labelledby="h-log">
+                <h2 class="sr-only" id="h-log">Registro</h2>
+                <ul class="log" id="log" aria-live="polite">
+                    <li class="log-empty">As ações aparecem aqui.</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

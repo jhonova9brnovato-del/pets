@@ -1,0 +1,449 @@
+:root {
+    --ink: #10304A;
+    --page: #DDF0F2;
+    --soap: #FBFEFE;
+    --water: #1FB5E5;
+    --shampoo: #B58CFF;
+    --signal: #FFD23F;
+    --mud: #8B5E34;
+    --glass: #CDEEF4;
+    --floor: #A9DCE6;
+    --fur: #D49A62;
+    --fur-dark: #B97B45;
+    --line: rgba(16, 48, 74, 0.18);
+    --font: "Bricolage Grotesque", ui-rounded, "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--page);
+    color: var(--ink);
+    font: 400 1rem/1.5 var(--font);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.app {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 40px) 64px;
+}
+
+/* ---------- cabeçalho ---------- */
+
+.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 32px;
+    margin-bottom: clamp(24px, 4vw, 44px);
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4.6vw, 3.4rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    font-variation-settings: "opsz" 96;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 10px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--soap);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.chip::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--water);
+    transition: background 0.4s;
+}
+
+.chip[data-tone="bad"]::before { background: var(--mud); }
+.chip[data-tone="idle"]::before { background: rgba(16, 48, 74, 0.3); }
+
+/* ---------- layout ---------- */
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .stage { max-width: 480px; }
+}
+
+/* ---------- máquina ---------- */
+
+.machine {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.m-body { fill: var(--soap); stroke: var(--ink); stroke-width: 4; }
+.m-feet { fill: var(--ink); }
+.m-head { fill: var(--ink); }
+.m-nozzles rect { fill: var(--signal); }
+.m-glass { fill: var(--glass); }
+.m-floor { fill: var(--floor); }
+.m-glass-frame { fill: none; stroke: var(--ink); stroke-width: 4; }
+.m-shine { fill: rgba(255, 255, 255, 0.28); pointer-events: none; }
+.m-display { fill: var(--ink); }
+.m-display-text {
+    fill: var(--signal);
+    font: 800 22px var(--font);
+}
+
+/* sujeira no vidro */
+.smudge { fill: var(--mud); opacity: 0; transition: opacity 0.5s; }
+.cabin[data-machine="dirty"] .smudge { opacity: 0.35; }
+.cabin[data-phase="washing"] .smudge { opacity: 0; transition-duration: 2.8s; }
+
+/* pet */
+.pet-wrap {
+    opacity: 0;
+    transform: translateY(150px);
+    transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.25, 1.05), opacity 0.5s;
+}
+.cabin[data-pet="in"] .pet-wrap { opacity: 1; transform: translateY(0); }
+
+.fur { fill: var(--fur); }
+.leg { fill: var(--fur-dark); }
+.ear { fill: var(--fur-dark); }
+.snout { fill: #F4D9B8; }
+.nose { fill: var(--ink); }
+.eye { fill: var(--ink); }
+.tail {
+    fill: none;
+    stroke: var(--fur-dark);
+    stroke-width: 14;
+    stroke-linecap: round;
+    transform-box: fill-box;
+    transform-origin: 0 100%;
+}
+
+.dirt { fill: var(--mud); transition: opacity 0.3s; }
+.cabin[data-pet-clean="true"] .dirt,
+.cabin[data-phase="rinsing"] .dirt { opacity: 0; }
+.cabin[data-phase="rinsing"] .dirt { transition-duration: 2.8s; }
+
+.foam {
+    fill: #fff;
+    stroke: var(--shampoo);
+    stroke-width: 2;
+    opacity: 0;
+    transition: opacity 2.8s ease;
+}
+.cabin[data-phase="soaping"] .foam { opacity: 0.95; transition-duration: 1.4s; }
+
+.sparkle {
+    fill: var(--signal);
+    stroke: var(--ink);
+    stroke-width: 1.5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.cabin[data-phase="clean"] .sparkle {
+    animation: twinkle 0.9s ease-out both;
+    animation-delay: calc(var(--i) * 0.18s);
+}
+.cabin[data-phase="clean"] .tail { animation: wag 0.45s ease-in-out 6 alternate; }
+
+/* jatos de shampoo e água */
+.jet {
+    stroke: var(--water);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 10 16;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.cabin[data-phase="soaping"] .jet { stroke: var(--shampoo); opacity: 1; animation: fall 0.45s linear infinite; }
+.cabin[data-phase="rinsing"] .jet,
+.cabin[data-phase="washing"] .jet { opacity: 1; animation: fall 0.45s linear infinite; }
+
+/* bolhas */
+.bubble {
+    /* valores padrão; o script.js sobrescreve em cada bolha */
+    --d: 3s;
+    --delay: 0s;
+    --sway: 0px;
+    fill: rgba(255, 255, 255, 0.7);
+    stroke: var(--shampoo);
+    stroke-width: 2;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.cabin[data-phase="soaping"] .bubble,
+.cabin[data-phase="washing"] .bubble {
+    animation: rise var(--d) ease-in infinite;
+    animation-delay: var(--delay);
+}
+
+@keyframes fall { to { stroke-dashoffset: -26; } }
+@keyframes rise {
+    0%   { transform: translate(0, 0) scale(0.4); opacity: 0; }
+    15%  { opacity: 1; }
+    100% { transform: translate(var(--sway), -250px) scale(1); opacity: 0; }
+}
+@keyframes twinkle {
+    0%   { transform: scale(0); opacity: 0; }
+    50%  { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes wag {
+    from { transform: rotate(-14deg); }
+    to   { transform: rotate(14deg); }
+}
+
+/* ---------- fases ---------- */
+
+.phases {
+    --dur: 3s; /* duração da fase; o script.js ajusta */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.phases li {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: rgba(16, 48, 74, 0.6);
+    transition: color 0.3s;
+}
+
+/* trilho que chega até cada fase */
+.phases li::before,
+.phases li::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    right: 50%;
+    height: 4px;
+    border-radius: 2px;
+}
+.phases li::before { width: 100%; background: var(--line); }
+.phases li::after { width: 0; background: var(--ink); transition: width 0.6s ease; }
+.phases li:first-child::before,
+.phases li:first-child::after { display: none; }
+
+.dot {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+    background: var(--page);
+    color: var(--ink);
+    font-weight: 800;
+    transition: background 0.3s, color 0.3s;
+}
+
+.phases li.done { color: var(--ink); }
+.phases li.done::after { width: 100%; }
+.phases li.done .dot { background: var(--ink); color: var(--soap); }
+
+.phases li.current { color: var(--ink); }
+.phases li.current .dot { background: var(--signal); }
+
+.phases li.running { color: var(--ink); }
+.phases li.running::after { animation: fill-progress var(--dur) linear forwards; }
+.phases li.running .dot { background: var(--water); animation: pulse 1s ease-out infinite; }
+
+@keyframes fill-progress { from { width: 0; } to { width: 100%; } }
+@keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(31, 181, 229, 0.7); }
+    100% { box-shadow: 0 0 0 14px rgba(31, 181, 229, 0); }
+}
+
+/* ---------- painel ---------- */
+
+.group + .group {
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 2px solid var(--line);
+}
+
+.gauge + .gauge { margin-top: 18px; }
+
+.gauge-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+.gauge-head output { font-weight: 400; font-variant-numeric: tabular-nums; }
+
+.tube {
+    position: relative;
+    height: 24px;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    background: var(--soap);
+    overflow: hidden;
+}
+.fill {
+    height: 100%;
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+.fill--water { background: var(--water); }
+.fill--shampoo { background: var(--shampoo); }
+
+/* cada marca é a quantidade de um banho */
+.tube::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+            to right,
+            transparent 0,
+            transparent calc(var(--seg) - 2px),
+            rgba(16, 48, 74, 0.45) calc(var(--seg) - 2px),
+            rgba(16, 48, 74, 0.45) var(--seg)
+    );
+}
+
+.baths-left { margin: 12px 0 0; font-weight: 600; }
+
+.pet-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.field { display: grid; gap: 4px; flex: 1 1 180px; font-weight: 700; }
+.field-label { font-size: 0.95rem; }
+
+input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    background: var(--soap);
+    color: var(--ink);
+    font: inherit;
+}
+input::placeholder { color: rgba(16, 48, 74, 0.45); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.btn {
+    padding: 10px 20px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--soap);
+    box-shadow: 0 4px 0 var(--ink);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+}
+.btn:hover { background: #fff; }
+.btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--ink); }
+.btn--primary { background: var(--signal); }
+.btn--primary:hover { background: #ffdb62; }
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--ink);
+}
+
+.btn:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+}
+
+/* ---------- log de ações ---------- */
+
+.log {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.log li {
+    padding: 8px 12px;
+    border-left: 5px solid var(--water);
+    border-radius: 0 10px 10px 0;
+    background: rgba(255, 255, 255, 0.6);
+}
+.log li[data-tone="warn"] { border-left-color: var(--mud); }
+.log li.log-empty { border-left-color: var(--line); color: rgba(16, 48, 74, 0.65); }
+.log li.new { animation: slide-in 0.35s ease-out; }
+
+@keyframes slide-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- movimento reduzido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
